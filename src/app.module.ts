@@ -6,6 +6,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { addTransactionalDataSource } from 'typeorm-transactional';
 import { DataSource } from 'typeorm';
 import { config } from './config/typeorm';
+import { PoiModule } from './poi/poi.module';
 
 export const NODE_ENV = process.env.NODE_ENV ? `.${process.env.NODE_ENV}` : '';
 
@@ -31,6 +32,7 @@ export const NODE_ENV = process.env.NODE_ENV ? `.${process.env.NODE_ENV}` : '';
       }),
       (env) => env['NODE_ENV'] !== 'test',
     ),
+    PoiModule,
   ],
   controllers: [AppController],
   providers: [AppService],
