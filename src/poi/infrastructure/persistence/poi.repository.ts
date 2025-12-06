@@ -27,6 +27,11 @@ export class PoiRepository implements IPoiRepository {
     return await this.typeOrmRepository.find();
   }
 
+  async findRandomByCategory(categoryId: string, limit: number): Promise<PoiEntity[]> {
+    console.log("limit", limit);
+    return await this.typeOrmRepository.find({take: limit});
+  }
+
   async create(poi: PoiEntity): Promise<PoiEntity> {
     return await this.typeOrmRepository.save(poi);
   }

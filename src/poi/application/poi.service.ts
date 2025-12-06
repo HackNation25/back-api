@@ -18,6 +18,10 @@ export class PoiService implements IPoiService {
     return this.poiRepository.findAll();
   }
 
+  async findRandomByCategory(categoryId: string, limit: number): Promise<PoiEntity[]> {
+    return await this.poiRepository.findRandomByCategory(categoryId, limit);
+  }
+
   async create(poi: PoiEntity): Promise<PoiEntity> {
     return this.poiRepository.create(poi);
   }

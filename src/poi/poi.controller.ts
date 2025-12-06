@@ -16,7 +16,6 @@ import type { IPoiService } from './application/interfaces/poi.service.interface
 import { CreatePoiDto } from './dto/create-poi.dto';
 import { UpdatePoiDto } from './dto/update-poi.dto';
 import { PoiResponseDto } from './dto/poi-response.dto';
-import { PoiEntity } from './infrastructure/persistence/poi.entity';
 
 @ApiTags('POI')
 @Controller('poi')
@@ -36,7 +35,7 @@ export class PoiController {
   @ApiResponse({ status: 400, description: 'Bad request' })
   async create(@Body() createPoiDto: CreatePoiDto): Promise<PoiResponseDto> {
     const poi = await this.poiService.create(createPoiDto.toEntity());
-    return this.toDto(poi);
+    return PoiResponseDto.fromEntity(poi);
   }
 
   @Get()
@@ -48,7 +47,7 @@ export class PoiController {
   })
   async findAll(): Promise<PoiResponseDto[]> {
     const pois = await this.poiService.findAll();
-    return pois.map((poi) => this.toDto(poi));
+    return pois.map((poi) => PoiResponseDto.fromEntity(poi));
   }
 
   @Get(':uuid')
@@ -64,7 +63,7 @@ export class PoiController {
     if (!poi) {
       throw new NotFoundException(`POI with UUID ${uuid} not found`);
     }
-    return this.toDto(poi);
+    return PoiResponseDto.fromEntity(poi);
   }
 
   @Put(':uuid')
@@ -83,7 +82,7 @@ export class PoiController {
     if (!poi) {
       throw new NotFoundException(`POI with UUID ${uuid} not found`);
     }
-    return this.toDto(poi);
+    return PoiResponseDto.fromEntity(poi);
   }
 
   @Delete(':uuid')
@@ -96,19 +95,6 @@ export class PoiController {
     if (!deleted) {
       throw new NotFoundException(`POI with UUID ${uuid} not found`);
     }
-  }
-
-  private toDto(poi: PoiEntity): PoiResponseDto {
-    return {
-      uuid: poi.uuid,
-      name: poi.name,
-      shortDescription: poi.shortDescription,
-      longDescription: poi.longDescription,
-      imageUrl: poi.imageUrl,
-      popularity: poi.popularity,
-      locationX: poi.locationX,
-      locationY: poi.locationY,
-    };
   }
 }
 
