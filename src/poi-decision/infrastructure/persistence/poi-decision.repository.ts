@@ -14,7 +14,7 @@ export class PoiDecisionRepository implements IPoiDecisionRepository {
   async findAllByUserProfile(
     userProfileId: string,
   ): Promise<PoiDecisionEntity[]> {
-    return await this.typeOrmRepository.find({ where: { userProfileId } });
+    return await this.typeOrmRepository.find({ where: { userProfile: { uuid: userProfileId } } });
   }
 
   async create(entity: PoiDecisionEntity): Promise<PoiDecisionEntity> {
