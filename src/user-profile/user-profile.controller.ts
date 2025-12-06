@@ -1,8 +1,9 @@
-import { Body, Controller, Inject, Post } from '@nestjs/common';
-import { ApiBody, ApiOperation, ApiTags } from '@nestjs/swagger';
+import { Body, Controller, Get, Inject, Param, Post } from '@nestjs/common';
+import { ApiBody, ApiOperation, ApiParam, ApiTags } from '@nestjs/swagger';
 import { UserProfileService } from './user-profile.service';
 import { CreateUserProfileDto } from './dto/create-user-profile.dto';
 import { UserProfileEntity } from './user-profile.entity';
+import { UserProfileDomain } from './user-profile.domain';
 
 @ApiTags('user-profile')
 @Controller('user/profile')
@@ -37,5 +38,12 @@ export class UserProfileController {
   })
   create(@Body() dto: CreateUserProfileDto): Promise<UserProfileEntity> {
     return this.userProfileService.createProfileUser(dto);
+  }
+
+  @Get('/:id')
+  @ApiOperation({ summary: 'Get a user profile by id' })
+  @ApiParam({ name: 'id', description: 'User profile id (UUID)' })
+  findOne(@Param('id') id: string): Promise<UserProfileDomain> {
+    return this.userProfileService.findById(id);
   }
 }
