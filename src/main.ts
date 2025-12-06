@@ -1,9 +1,41 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
+import { json } from 'express';
+import {
+  initializeTransactionalContext,
+  StorageDriver,
+} from 'typeorm-transactional';
+import { ValidationPipe } from '@nestjs/common';
+import { LoggingInterceptor } from '@algoan/nestjs-logging-interceptor';
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
+  initializeTransactionalContext({ storageDriver: StorageDriver.AUTO });
+
+  const app = await NestFactory.create(AppModule, {
+    abortOnError: true,
+    logger: ['debug'],
+  });
+
+  app.enableCors({
+    origin: process.env.CORS_ORIGIN,
+    methods: ['GET', 'OPTIONS', 'POST', 'PATCH', 'DELETE'],
+    credentials: true,
+  });
+
+  app.useGlobalPipes(
+    new ValidationPipe({
+      transform: true,
+      transformOptions: {
+        enableImplicitConversion: true,
+      },
+    }),
+  );
+
+  app.useGlobalInterceptors(new LoggingInterceptor());
+
+  app.use(json({ limit: '80mb' }));
+
 
   const config = new DocumentBuilder()
     .setTitle('Bydgoszcz API')
