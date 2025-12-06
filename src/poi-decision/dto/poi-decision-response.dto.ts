@@ -1,5 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { PoiDecisionEntity } from '../infrastructure/persistence/poi-decision.entity';
+import { PoiResponseDto } from '../../poi/dto/poi-response.dto';
 
 export class PoiDecisionResponseDto {
   @ApiProperty({ description: 'Decision UUID' })
@@ -20,6 +21,13 @@ export class PoiDecisionResponseDto {
   @ApiProperty({ description: 'Decision value' })
   decision!: boolean;
 
+  @ApiProperty({
+    description: 'Embedded POI object',
+    type: () => PoiResponseDto,
+    required: false,
+  })
+  poi?: PoiResponseDto;
+
   static fromEntity(entity: PoiDecisionEntity): PoiDecisionResponseDto {
     return {
       uuid: entity.uuid,
@@ -28,6 +36,9 @@ export class PoiDecisionResponseDto {
       createAt: entity.createdAt,
       modifiedAt: entity.modifiedAt,
       decision: entity.decision,
+      poi: entity.poi
+        ? PoiResponseDto.fromEntity(entity.poi as any)
+        : undefined,
     } as PoiDecisionResponseDto;
   }
 }
