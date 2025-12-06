@@ -20,4 +20,19 @@ export class PoiDecisionRepository implements IPoiDecisionRepository {
   async create(entity: PoiDecisionEntity): Promise<PoiDecisionEntity> {
     return await this.typeOrmRepository.save(entity);
   }
+
+  async findByPoiAndUser(
+    poiId: string,
+    userProfileId: string,
+  ): Promise<PoiDecisionEntity | null> {
+    return await this.typeOrmRepository.findOne({
+      where: { poi: { uuid: poiId }, userProfile: { uuid: userProfileId } },
+      relations: [],
+    });
+  }
+
+  async update(entity: PoiDecisionEntity): Promise<PoiDecisionEntity> {
+    // save() with a primary key performs an update
+    return await this.typeOrmRepository.save(entity);
+  }
 }
