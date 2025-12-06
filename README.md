@@ -23,7 +23,34 @@
 
 ## Description
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+HackNation25 Back-API is a NestJS backend service that powers a city discovery and recommendation experience. It manages:
+
+- User profiles and their category preferences
+- Points of Interest (POIs) and categories
+- Recommendation logic based on user choices/weights
+- POI decisions (feedback) that adjust category weights
+
+Use this service to expose REST APIs (with Swagger docs) for creating user profiles, exploring POIs, and generating recommendations.
+
+### Required environment variables
+Create a `.env` (or environment-specific files like `.env.development`, `.env.production`) with the variables below. Defaults shown are what the code falls back to when a variable is not provided.
+
+- NODE_ENV: Environment name used to pick `.env.{NODE_ENV}` (e.g., `development`, `production`). Optional; default: unset.
+- PORT: Port for the HTTP server. Optional; default: `3000`.
+- CORS_ORIGIN: Allowed origin for CORS (e.g., `http://localhost:5173`). Required for browsers using the API.
+
+Database (PostgreSQL):
+- DATABASE_HOST: Database host. Default: `localhost`.
+- DATABASE_PORT: Database port. Default: `5432`.
+- DATABASE_USERNAME: Database user. Default: `db`.
+- DATABASE_PASSWORD: Database password. Default: `db`.
+- DATABASE_NAME: Database name. Default: `db`.
+- DATABASE_LOGGING_LEVEL: Comma-separated TypeORM logging options (e.g., `query,error`). Optional; default: disabled.
+- DATABASE_SYNCHRONIZE: Whether to run TypeORM schema sync on startup (`true`/`false`). Optional; default: `false`.
+- DATABASE_AUTO_RUN_MIGRATIONS: Whether to auto-run migrations on startup (`true`/`false`). Optional; default: `false`.
+
+Domain defaults:
+- INITIAL_CATEGORY_WEIGHT: Initial weight assigned to user category choices. Optional; default: `50`.
 
 ## Project setup
 
