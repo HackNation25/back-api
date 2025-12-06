@@ -8,8 +8,8 @@ import { UserProfileEntity } from './user-profile.entity';
 @Controller('user/profile')
 export class UserProfileController {
   constructor(
-    @Inject("IUserProfileService")
-    private readonly userProfileService: UserProfileService
+    @Inject('IUserProfileService')
+    private readonly userProfileService: UserProfileService,
   ) {}
 
   @Post()

@@ -21,4 +21,3 @@ import { PoiEntity } from './infrastructure/persistence/poi.entity';
   exports: ['IPoiService', 'IPoiRepository'],
 })
 export class PoiModule {}
-

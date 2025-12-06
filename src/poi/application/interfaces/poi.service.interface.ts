@@ -8,4 +8,3 @@ export interface IPoiService {
   update(uuid: string, poi: Partial<PoiEntity>): Promise<PoiEntity | null>;
   delete(uuid: string): Promise<boolean>;
 }
-

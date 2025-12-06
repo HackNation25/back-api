@@ -9,10 +9,10 @@ import { CategoryController } from './category.controller';
   controllers: [CategoryController],
   providers: [
     {
-      provide: "ICategoryService",
+      provide: 'ICategoryService',
       useClass: CategoryService,
     },
   ],
-  exports: ["ICategoryService"],
+  exports: ['ICategoryService'],
 })
 export class CategoryModule {}

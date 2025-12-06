@@ -3,7 +3,10 @@ import { IsString, IsNumber, IsUrl, Min, Max } from 'class-validator';
 import { PoiEntity } from '../infrastructure/persistence/poi.entity';
 
 export class CreatePoiDto {
-  @ApiProperty({ description: 'Name of the POI', example: 'Historic City Center' })
+  @ApiProperty({
+    description: 'Name of the POI',
+    example: 'Historic City Center',
+  })
   @IsString()
   name: string;
 
@@ -16,7 +19,8 @@ export class CreatePoiDto {
 
   @ApiProperty({
     description: 'Long description of the POI',
-    example: 'The historic city center features well-preserved medieval architecture, cobblestone streets, and numerous cultural landmarks dating back to the 14th century.',
+    example:
+      'The historic city center features well-preserved medieval architecture, cobblestone streets, and numerous cultural landmarks dating back to the 14th century.',
   })
   @IsString()
   longDescription: string;
@@ -58,7 +62,7 @@ export class CreatePoiDto {
       this.imageUrl,
       this.popularity,
       this.locationX,
-      this.locationY
+      this.locationY,
     );
     return entity;
   }

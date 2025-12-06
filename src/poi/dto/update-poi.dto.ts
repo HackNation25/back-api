@@ -1,9 +1,19 @@
 import { ApiPropertyOptional } from '@nestjs/swagger';
-import { IsString, IsNumber, IsUrl, Min, Max, IsOptional } from 'class-validator';
+import {
+  IsString,
+  IsNumber,
+  IsUrl,
+  Min,
+  Max,
+  IsOptional,
+} from 'class-validator';
 import { PoiEntity } from '../infrastructure/persistence/poi.entity';
 
 export class UpdatePoiDto {
-  @ApiPropertyOptional({ description: 'Name of the POI', example: 'Historic City Center' })
+  @ApiPropertyOptional({
+    description: 'Name of the POI',
+    example: 'Historic City Center',
+  })
   @IsString()
   @IsOptional()
   name?: string;
@@ -18,7 +28,8 @@ export class UpdatePoiDto {
 
   @ApiPropertyOptional({
     description: 'Long description of the POI',
-    example: 'The historic city center features well-preserved medieval architecture...',
+    example:
+      'The historic city center features well-preserved medieval architecture...',
   })
   @IsString()
   @IsOptional()
@@ -51,7 +62,10 @@ export class UpdatePoiDto {
   @IsNumber()
   @IsOptional()
   locationX?: number;
-  @ApiPropertyOptional({ description: 'Y coordinate (latitude)', example: 53.0 })
+  @ApiPropertyOptional({
+    description: 'Y coordinate (latitude)',
+    example: 53.0,
+  })
   @IsNumber()
   @IsOptional()
   locationY?: number;
@@ -69,4 +83,3 @@ export class UpdatePoiDto {
     return entity;
   }
 }
-

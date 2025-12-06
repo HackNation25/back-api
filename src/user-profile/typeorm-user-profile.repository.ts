@@ -23,6 +23,11 @@ export class TypeormUserProfileRepository implements IUserProfileRepository {
     if (!entity) {
       throw new NotFoundException('User profile not found');
     }
-    return new UserProfileDomain(entity.uuid, entity.choices.map(choice => new Choice(choice.category_id, choice.choice)));
+    return new UserProfileDomain(
+      entity.uuid,
+      entity.choices.map(
+        (choice) => new Choice(choice.category_id, choice.choice),
+      ),
+    );
   }
 }

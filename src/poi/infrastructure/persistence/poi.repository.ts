@@ -27,15 +27,21 @@ export class PoiRepository implements IPoiRepository {
     return await this.typeOrmRepository.find();
   }
 
-  async findRandomByCategory(categoryId: string, limit: number): Promise<PoiEntity[]> {
-    return await this.typeOrmRepository.find({take: limit});
+  async findRandomByCategory(
+    categoryId: string,
+    limit: number,
+  ): Promise<PoiEntity[]> {
+    return await this.typeOrmRepository.find({ take: limit });
   }
 
   async create(poi: PoiEntity): Promise<PoiEntity> {
     return await this.typeOrmRepository.save(poi);
   }
 
-  async update(uuid: string, poi: Partial<PoiEntity>): Promise<PoiEntity | null> {
+  async update(
+    uuid: string,
+    poi: Partial<PoiEntity>,
+  ): Promise<PoiEntity | null> {
     const existingEntity = await this.typeOrmRepository.findOne({
       where: { uuid },
     });
@@ -79,4 +85,3 @@ export class PoiRepository implements IPoiRepository {
     return (result.affected ?? 0) > 0;
   }
 }
-

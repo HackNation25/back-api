@@ -10,14 +10,14 @@ import { TypeormUserProfileRepository } from './typeorm-user-profile.repository'
   controllers: [UserProfileController],
   providers: [
     {
-      provide: "IUserProfileRepository",
+      provide: 'IUserProfileRepository',
       useClass: TypeormUserProfileRepository,
     },
     {
-      provide: "IUserProfileService",
+      provide: 'IUserProfileService',
       useClass: UserProfileService,
     },
   ],
-  exports: ["IUserProfileService"],
+  exports: ['IUserProfileService'],
 })
 export class UserProfileModule {}

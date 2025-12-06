@@ -36,7 +36,6 @@ async function bootstrap() {
 
   app.use(json({ limit: '80mb' }));
 
-
   const config = new DocumentBuilder()
     .setTitle('Bydgoszcz API')
     .setDescription('API')

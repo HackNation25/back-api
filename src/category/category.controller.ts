@@ -24,8 +24,8 @@ import { CreateCategoryDto } from './dto/create-category.dto';
 @Controller('category')
 export class CategoryController {
   constructor(
-    @Inject("ICategoryService")
-    private readonly categoryService: CategoryService
+    @Inject('ICategoryService')
+    private readonly categoryService: CategoryService,
   ) {}
 
   @Get(':id')

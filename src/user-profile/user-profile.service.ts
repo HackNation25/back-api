@@ -8,7 +8,7 @@ import { UserProfileDomain } from './user-profile.domain';
 @Injectable()
 export class UserProfileService implements IUserProfileService {
   constructor(
-    @Inject("IUserProfileRepository")
+    @Inject('IUserProfileRepository')
     private readonly repo: IUserProfileRepository,
   ) {}
 

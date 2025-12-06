@@ -1,8 +1,8 @@
 export class Choice {
-    constructor(
-        public readonly category_id: string,
-        public readonly choice: string,
-    ) {}
+  constructor(
+    public readonly category_id: string,
+    public readonly choice: string,
+  ) {}
 }
 
 export class UserProfileDomain {
