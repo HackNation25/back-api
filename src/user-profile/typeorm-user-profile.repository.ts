@@ -26,7 +26,8 @@ export class TypeormUserProfileRepository implements IUserProfileRepository {
     return new UserProfileDomain(
       entity.uuid,
       entity.choices.map(
-        (choice) => new Choice(choice.category_id, choice.choice),
+        (choice) =>
+          new Choice(choice.category_id, choice.choice, choice.categoryWeight),
       ),
     );
   }

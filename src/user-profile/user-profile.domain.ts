@@ -2,6 +2,7 @@ export class Choice {
   constructor(
     public readonly category_id: string,
     public readonly choice: string,
+    public readonly categoryWeight: number,
   ) {}
 }
 
