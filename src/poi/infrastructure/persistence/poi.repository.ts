@@ -27,11 +27,24 @@ export class PoiRepository implements IPoiRepository {
     return await this.typeOrmRepository.find();
   }
 
+  async findAllByCategory(
+    categoryId: string,
+    limit: number,
+  ): Promise<PoiEntity[]> {
+    return await this.typeOrmRepository.find({
+      where: { category: { id: categoryId } },
+      take: limit,
+    });
+  }
+
   async findRandomByCategory(
     categoryId: string,
     limit: number,
   ): Promise<PoiEntity[]> {
-    return await this.typeOrmRepository.find({ take: limit });
+    return await this.typeOrmRepository.find({
+      where: { category: { id: categoryId } },
+      take: limit,
+    });
   }
 
   async create(poi: PoiEntity): Promise<PoiEntity> {

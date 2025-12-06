@@ -1,10 +1,9 @@
-import { Inject, Injectable } from '@nestjs/common';
+import { Inject, Injectable, NotFoundException } from '@nestjs/common';
 import { IRecommendationService } from './interfaces/recommendation.service.interface';
 import { PoiEntity } from 'src/poi/infrastructure/persistence/poi.entity';
 import type { IPoiService } from 'src/poi/application/interfaces/poi.service.interface';
 import type { IUserProfileService } from 'src/user-profile/application/interfaces/user-profile.service.interface';
-import type { ICategoryService } from 'src/category/application/interfaces/category.service.interface';
-import { Choice } from '../../user-profile/user-profile.domain';
+import type { IPoiDecisionService } from 'src/poi-decision/application/interfaces/poi-decision.service.interface';
 
 @Injectable()
 export class RecommendationService implements IRecommendationService {
@@ -13,30 +12,62 @@ export class RecommendationService implements IRecommendationService {
     private readonly poiService: IPoiService,
     @Inject('IUserProfileService')
     private readonly userProfileService: IUserProfileService,
-    @Inject('ICategoryService')
-    private readonly categoryService: ICategoryService,
+    @Inject('IPoiDecisionService')
+    private readonly poiDecisionService: IPoiDecisionService,
   ) {}
 
   async getRecommendations(
     userId: string,
     limit: number,
+    excludedCategories: string[] = [],
+    excludedPois: string[] = [],
   ): Promise<PoiEntity[]> {
     //get user preferences
-    const userPreferences = await this.userProfileService.findById(userId);
-    const selectedCategories = userPreferences.choices
+    const userProfile = await this.userProfileService.findById(userId);
+    const selectedCategoriesWithWeights = userProfile.choices
       .filter((choice) => choice.choice !== '0')
-      .map((choice) => choice.category_id);
+      .map((choice) => ({
+        categoryId: choice.category_id,
+        weight: choice.categoryWeight,
+      }));
 
-    const categories = await Promise.all(
-      selectedCategories.map((categoryId) =>
-        this.categoryService.getById(categoryId),
-      ),
-    ).then((categories) => categories.filter((category) => category !== null));
-
-    //get category based on user preferences
-    const category = categories[0]; //FIXME
+    //select category based on weights (random with probability)
+    const weightsSum = selectedCategoriesWithWeights.reduce(
+      (acc, curr) => acc + curr.weight,
+      0,
+    );
+    const randomNumber = Math.random() * weightsSum;
+    let cumulativeWeight = 0;
+    let selectedCategory: string | null = null;
+    for (const category of selectedCategoriesWithWeights) {
+      if (selectedCategory) {
+        break;
+      }
+      cumulativeWeight += category.weight;
+      if (randomNumber <= cumulativeWeight) {
+        selectedCategory = category.categoryId;
+        break;
+      }
+    }
 
     //query poi service for pois matching criterias
-    return this.poiService.findRandomByCategory(category.id, limit);
+    if (!selectedCategory) {
+      throw new NotFoundException('No category selected');
+    }
+
+    const categoryPois = await this.poiService.findAllByCategory(selectedCategory, limit);
+
+    //random by popularity
+    const randomPois = categoryPois.sort((a, b) => b.popularity - a.popularity).slice(0, limit);
+
+    const poiDecisions = await this.poiDecisionService.getAllByUserProfile(userId);
+    const poiDecisionsMap = new Set<string>(poiDecisions.map((decision) => decision.poiId));
+    const filteredPois = randomPois.filter((poi) => !poiDecisionsMap.has(poi.uuid) && !excludedPois.includes(poi.uuid));
+
+    if (filteredPois.length === 0) {
+        return this.getRecommendations(userId, limit, excludedCategories.concat(selectedCategory), excludedPois.concat(randomPois.map((poi) => poi.uuid)));
+    }
+
+    return filteredPois;
   }
 }
