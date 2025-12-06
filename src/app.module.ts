@@ -6,6 +6,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { addTransactionalDataSource } from 'typeorm-transactional';
 import { DataSource } from 'typeorm';
 import { config } from './config/typeorm';
+import { UserProfileModule } from './user-profile/user-profile.module';
 
 export const NODE_ENV = process.env.NODE_ENV ? `.${process.env.NODE_ENV}` : '';
 
@@ -15,6 +16,7 @@ export const NODE_ENV = process.env.NODE_ENV ? `.${process.env.NODE_ENV}` : '';
       isGlobal: true,
       envFilePath: `.env${NODE_ENV}`,
     }),
+    UserProfileModule,
     ConditionalModule.registerWhen(
       TypeOrmModule.forRootAsync({
         inject: [ConfigService],

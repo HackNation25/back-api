@@ -8,7 +8,6 @@ const logging: LoggerOptions = process.env.DATABASE_LOGGING_LEVEL
   ? (process.env.DATABASE_LOGGING_LEVEL.split(',') as LoggerOptions)
   : false;
 
-
 export const config: DataSourceOptions = {
   type: 'postgres',
   port: parseInt(process.env.DATABASE_PORT || '5432', 10) || 5432,
