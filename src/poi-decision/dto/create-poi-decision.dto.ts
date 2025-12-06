@@ -5,14 +5,14 @@ import { PoiDecisionEntity } from '../infrastructure/persistence/poi-decision.en
 export class CreatePoiDecisionDto {
   @ApiProperty({
     description: 'POI UUID',
-    example: '11111111-1111-1111-1111-111111111111',
+    example: '94e1e0db-294e-4109-b11c-9e33d3fd6174',
   })
   @IsUUID()
   poiId!: string;
 
   @ApiProperty({
     description: 'User Profile UUID',
-    example: '22222222-2222-2222-2222-222222222222',
+    example: 'a3def291-1cda-4cdc-ba1a-8b0d121be858',
   })
   @IsUUID()
   userProfileId!: string;

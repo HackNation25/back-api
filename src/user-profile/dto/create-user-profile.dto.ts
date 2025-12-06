@@ -22,6 +22,12 @@ export class ChoiceDto {
     example: '1',
   })
   choice!: string;
+
+  @ApiPropertyOptional({
+    description: 'Category weight as number',
+    example: 1,
+  })
+  categoryWeight: number;
 }
 
 export class CreateUserProfileDto {

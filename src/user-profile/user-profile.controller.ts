@@ -36,6 +36,6 @@ export class UserProfileController {
     },
   })
   create(@Body() dto: CreateUserProfileDto): Promise<UserProfileEntity> {
-    return this.userProfileService.profileUser(dto);
+    return this.userProfileService.createProfileUser(dto);
   }
 }

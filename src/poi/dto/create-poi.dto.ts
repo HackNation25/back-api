@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsString, IsNumber, IsUrl, Min, Max } from 'class-validator';
+import { IsNumber, IsString, IsUrl, Max, Min } from 'class-validator';
 import { PoiEntity } from '../infrastructure/persistence/poi.entity';
 
 export class CreatePoiDto {
@@ -16,6 +16,12 @@ export class CreatePoiDto {
   })
   @IsString()
   shortDescription: string;
+
+  @ApiProperty({
+    description: 'Category UUID',
+    example: '7987b9c5-7416-432d-ad61-71ebf143725f',
+  })
+  categoryId: string;
 
   @ApiProperty({
     description: 'Long description of the POI',
@@ -55,15 +61,15 @@ export class CreatePoiDto {
   locationY: number;
 
   toEntity(): PoiEntity {
-    const entity: PoiEntity = PoiEntity.create(
+    return PoiEntity.create(
       this.name,
       this.shortDescription,
+      this.categoryId,
       this.longDescription,
       this.imageUrl,
       this.popularity,
       this.locationX,
       this.locationY,
     );
-    return entity;
   }
 }

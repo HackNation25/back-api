@@ -1,5 +1,13 @@
-import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
+import {
+  Column,
+  Entity,
+  JoinColumn,
+  ManyToOne,
+  PrimaryGeneratedColumn,
+  RelationId,
+} from 'typeorm';
 import { randomUUID } from 'node:crypto';
+import { CategoryEntity } from '../../../category/category.entity';
 
 @Entity('poi')
 export class PoiEntity {
@@ -8,6 +16,13 @@ export class PoiEntity {
 
   @Column({ type: 'varchar', length: 255 })
   name: string;
+
+  @ManyToOne(() => CategoryEntity, { nullable: false, onDelete: 'RESTRICT' })
+  @JoinColumn({ name: 'category_id', referencedColumnName: 'id' })
+  category: CategoryEntity;
+
+  @RelationId((d: PoiEntity) => d.category)
+  categoryId: string;
 
   @Column({ type: 'text' })
   shortDescription: string;
@@ -29,6 +44,7 @@ export class PoiEntity {
   static create(
     name: string,
     shortDescription: string,
+    categoryId: string,
     longDescription: string,
     imageUrl: string,
     popularity: number,
@@ -39,11 +55,12 @@ export class PoiEntity {
       uuid: randomUUID() as string,
       name,
       shortDescription,
+      category: { id: categoryId } as CategoryEntity,
       longDescription,
       imageUrl,
       popularity,
       locationX,
       locationY,
-    };
+    } as unknown as PoiEntity;
   }
 }
