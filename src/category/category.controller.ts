@@ -2,6 +2,7 @@ import {
   Body,
   Controller,
   Get,
+  Inject,
   NotFoundException,
   Param,
   Post,
@@ -22,7 +23,10 @@ import { CreateCategoryDto } from './dto/create-category.dto';
 @ApiTags('category')
 @Controller('category')
 export class CategoryController {
-  constructor(private readonly categoryService: CategoryService) {}
+  constructor(
+    @Inject('ICategoryService')
+    private readonly categoryService: CategoryService,
+  ) {}
 
   @Get(':id')
   @ApiOperation({ summary: 'Get a category by id' })

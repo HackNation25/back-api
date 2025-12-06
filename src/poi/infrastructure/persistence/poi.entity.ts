@@ -1,8 +1,4 @@
-import {
-  Entity,
-  PrimaryGeneratedColumn,
-  Column,
-} from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
 import { randomUUID } from 'node:crypto';
 
 @Entity('poi')
@@ -30,7 +26,15 @@ export class PoiEntity {
   @Column({ type: 'decimal', precision: 10, scale: 8 })
   locationY: number;
 
-  static create(name: string, shortDescription: string, longDescription: string, imageUrl: string, popularity: number, locationX: number, locationY: number): PoiEntity {
+  static create(
+    name: string,
+    shortDescription: string,
+    longDescription: string,
+    imageUrl: string,
+    popularity: number,
+    locationX: number,
+    locationY: number,
+  ): PoiEntity {
     return {
       uuid: randomUUID() as string,
       name,
@@ -43,4 +47,3 @@ export class PoiEntity {
     };
   }
 }
-
