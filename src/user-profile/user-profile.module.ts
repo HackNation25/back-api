@@ -8,6 +8,16 @@ import { TypeormUserProfileRepository } from './typeorm-user-profile.repository'
 @Module({
   imports: [TypeOrmModule.forFeature([UserProfileEntity])],
   controllers: [UserProfileController],
-  providers: [UserProfileService, TypeormUserProfileRepository],
+  providers: [
+    {
+      provide: "IUserProfileRepository",
+      useClass: TypeormUserProfileRepository,
+    },
+    {
+      provide: "IUserProfileService",
+      useClass: UserProfileService,
+    },
+  ],
+  exports: ["IUserProfileService"],
 })
 export class UserProfileModule {}
