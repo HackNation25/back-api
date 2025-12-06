@@ -10,12 +10,14 @@ import {
   HttpStatus,
   NotFoundException,
   Inject,
+  UseGuards,
 } from '@nestjs/common';
 import { ApiTags, ApiOperation, ApiResponse } from '@nestjs/swagger';
 import type { IPoiService } from './application/interfaces/poi.service.interface';
 import { CreatePoiDto } from './dto/create-poi.dto';
 import { UpdatePoiDto } from './dto/update-poi.dto';
 import { PoiResponseDto } from './dto/poi-response.dto';
+import { AdminGuard } from 'src/guards/admin.guard';
 
 @ApiTags('POI')
 @Controller('poi')
@@ -26,6 +28,7 @@ export class PoiController {
   ) {}
 
   @Post()
+  @UseGuards(AdminGuard)
   @ApiOperation({ summary: 'Create a new POI' })
   @ApiResponse({
     status: 201,
@@ -67,6 +70,7 @@ export class PoiController {
   }
 
   @Put(':uuid')
+  @UseGuards(AdminGuard)
   @ApiOperation({ summary: 'Update a POI' })
   @ApiResponse({
     status: 200,
@@ -86,6 +90,7 @@ export class PoiController {
   }
 
   @Delete(':uuid')
+  @UseGuards(AdminGuard)
   @HttpCode(HttpStatus.NO_CONTENT)
   @ApiOperation({ summary: 'Delete a POI' })
   @ApiResponse({ status: 204, description: 'POI deleted successfully' })

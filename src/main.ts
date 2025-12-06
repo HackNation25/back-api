@@ -37,8 +37,8 @@ async function bootstrap() {
   app.use(json({ limit: '80mb' }));
 
   const config = new DocumentBuilder()
-    .setTitle('Bydgoszcz API')
-    .setDescription('API')
+    .setTitle('Odkryj Bydgoszcz API')
+    .setDescription('Odkrywaj miasto na swoich zasadach.')
     .setVersion('1.0')
     .build();
   const documentFactory = () => SwaggerModule.createDocument(app, config);

@@ -6,6 +6,7 @@ import {
   NotFoundException,
   Param,
   Post,
+  UseGuards,
 } from '@nestjs/common';
 import {
   ApiBadRequestResponse,
@@ -19,6 +20,7 @@ import {
 import { CategoryService } from './category.service';
 import { CategoryEntity } from './category.entity';
 import { CreateCategoryDto } from './dto/create-category.dto';
+import { AdminGuard } from 'src/guards/admin.guard';
 
 @ApiTags('category')
 @Controller('category')
@@ -45,6 +47,7 @@ export class CategoryController {
   }
 
   @Post()
+  @UseGuards(AdminGuard)
   @ApiOperation({ summary: 'Create a new category' })
   @ApiBody({
     description: 'Payload for creating a category',

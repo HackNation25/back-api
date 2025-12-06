@@ -1,6 +1,4 @@
 import { Module } from '@nestjs/common';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
 import { ConditionalModule, ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { addTransactionalDataSource } from 'typeorm-transactional';
@@ -42,7 +40,5 @@ export const NODE_ENV = process.env.NODE_ENV ? `.${process.env.NODE_ENV}` : '';
     RecommendationModule,
     PoiDecisionModule,
   ],
-  controllers: [AppController],
-  providers: [AppService],
 })
 export class AppModule {}
