@@ -32,8 +32,11 @@ export class PoiDecisionEntity {
   @RelationId((d: PoiDecisionEntity) => d.userProfile)
   userProfileId!: string;
 
-  @CreateDateColumn({ name: 'create_at', type: 'timestamptz' })
-  create_at!: Date;
+  @CreateDateColumn({ name: 'created_at', type: 'timestamptz' })
+  createdAt!: Date;
+
+  @CreateDateColumn({ name: 'modified_at', type: 'timestamptz' })
+  modifiedAt!: Date;
 
   @Column({ type: 'boolean' })
   decision!: boolean;

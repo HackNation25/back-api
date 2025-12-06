@@ -12,7 +12,10 @@ export class PoiDecisionResponseDto {
   userProfileId!: string;
 
   @ApiProperty({ description: 'Creation timestamp' })
-  create_at!: Date;
+  createAt!: Date;
+
+  @ApiProperty({ description: 'Last modified timestamp' })
+  modifiedAt!: Date;
 
   @ApiProperty({ description: 'Decision value' })
   decision!: boolean;
@@ -22,7 +25,8 @@ export class PoiDecisionResponseDto {
       uuid: entity.uuid,
       poiId: entity.poiId,
       userProfileId: entity.userProfileId,
-      create_at: entity.create_at,
+      createAt: entity.createdAt,
+      modifiedAt: entity.modifiedAt,
       decision: entity.decision,
     } as PoiDecisionResponseDto;
   }
