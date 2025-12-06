@@ -1,9 +1,10 @@
 import { InjectRepository } from '@nestjs/typeorm';
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { Repository } from 'typeorm';
 import { UserProfileEntity } from './user-profile.entity';
 import { IUserProfileRepository } from './application/interfaces/user-profile.repository.interface';
-import { ChoicesDto } from './dto/create-user-profile.dto';
+import { ChoiceDto } from './dto/create-user-profile.dto';
+import { Choice, UserProfileDomain } from './user-profile.domain';
 
 @Injectable()
 export class TypeormUserProfileRepository implements IUserProfileRepository {
@@ -12,8 +13,21 @@ export class TypeormUserProfileRepository implements IUserProfileRepository {
     private readonly repo: Repository<UserProfileEntity>,
   ) {}
 
-  async createUserProfile(choices?: ChoicesDto[]): Promise<UserProfileEntity> {
+  async createUserProfile(choices?: ChoiceDto[]): Promise<UserProfileEntity> {
     const entity = this.repo.create({ choices: choices ?? [] });
     return this.repo.save(entity);
+  }
+
+  async findById(userId: string): Promise<UserProfileDomain> {
+    const entity = await this.repo.findOne({ where: { uuid: userId } });
+    if (!entity) {
+      throw new NotFoundException('User profile not found');
+    }
+    return new UserProfileDomain(
+      entity.uuid,
+      entity.choices.map(
+        (choice) => new Choice(choice.category_id, choice.choice),
+      ),
+    );
   }
 }

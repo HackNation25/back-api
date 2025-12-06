@@ -1,4 +1,4 @@
-import { Body, Controller, Post } from '@nestjs/common';
+import { Body, Controller, Inject, Post } from '@nestjs/common';
 import { ApiBody, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { UserProfileService } from './user-profile.service';
 import { CreateUserProfileDto } from './dto/create-user-profile.dto';
@@ -7,7 +7,10 @@ import { UserProfileEntity } from './user-profile.entity';
 @ApiTags('user-profile')
 @Controller('user/profile')
 export class UserProfileController {
-  constructor(private readonly userProfileService: UserProfileService) {}
+  constructor(
+    @Inject('IUserProfileService')
+    private readonly userProfileService: UserProfileService,
+  ) {}
 
   @Post()
   @ApiOperation({ summary: 'Create a user profile' })

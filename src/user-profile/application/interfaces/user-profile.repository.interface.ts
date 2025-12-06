@@ -1,6 +1,8 @@
+import { ChoiceDto } from 'src/user-profile/dto/create-user-profile.dto';
 import { UserProfileEntity } from '../../user-profile.entity';
-import { ChoicesDto } from '../../dto/create-user-profile.dto';
+import { UserProfileDomain } from 'src/user-profile/user-profile.domain';
 
 export interface IUserProfileRepository {
-  createUserProfile(choices?: ChoicesDto[]): Promise<UserProfileEntity>;
+  createUserProfile(choices?: ChoiceDto[]): Promise<UserProfileEntity>;
+  findById(userId: string): Promise<UserProfileDomain>;
 }

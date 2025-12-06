@@ -8,7 +8,7 @@ import {
 import { Type } from 'class-transformer';
 import { ApiPropertyOptional } from '@nestjs/swagger';
 
-export class ChoicesDto {
+export class ChoiceDto {
   @IsUUID('4', { message: 'category_id must be a valid UUID v4' })
   @ApiPropertyOptional({
     description: 'Category identifier as UUID',
@@ -28,11 +28,11 @@ export class CreateUserProfileDto {
   @IsOptional()
   @IsArray()
   @ValidateNested({ each: true })
-  @Type(() => ChoicesDto)
+  @Type(() => ChoiceDto)
   @ApiPropertyOptional({
     description: 'User choices payload as an array of choices',
     required: false,
-    type: () => ChoicesDto,
+    type: () => ChoiceDto,
     isArray: true,
     example: [
       {
@@ -45,5 +45,5 @@ export class CreateUserProfileDto {
       },
     ],
   })
-  choices?: ChoicesDto[];
+  choices?: ChoiceDto[];
 }
