@@ -35,6 +35,7 @@ export class PoiDecisionService implements IPoiDecisionService {
         `PoiDecision already exists, updating to ${decision.decision}`,
       );
       existing.decision = decision.decision;
+      existing.modifiedAt = new Date();
       return await this.repository.update(existing);
     }
 
