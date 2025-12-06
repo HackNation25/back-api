@@ -4,6 +4,7 @@ import { PoiEntity } from 'src/poi/infrastructure/persistence/poi.entity';
 import type { IPoiService } from 'src/poi/application/interfaces/poi.service.interface';
 import type { IUserProfileService } from 'src/user-profile/application/interfaces/user-profile.service.interface';
 import type { ICategoryService } from 'src/category/application/interfaces/category.service.interface';
+import { Choice } from '../../user-profile/user-profile.domain';
 
 @Injectable()
 export class RecommendationService implements IRecommendationService {

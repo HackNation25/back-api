@@ -18,14 +18,14 @@ export class PoiDecisionEntity {
   @PrimaryGeneratedColumn('uuid')
   uuid!: string;
 
-  @ManyToOne(() => PoiEntity, { nullable: false, onDelete: 'DEFAULT' })
+  @ManyToOne(() => PoiEntity, { nullable: false, onDelete: 'RESTRICT' })
   @JoinColumn({ name: 'poi_id', referencedColumnName: 'uuid' })
   poi!: PoiEntity;
 
   @RelationId((d: PoiDecisionEntity) => d.poi)
   poiId!: string;
 
-  @ManyToOne(() => UserProfileEntity, { nullable: false, onDelete: 'DEFAULT' })
+  @ManyToOne(() => UserProfileEntity, { nullable: false, onDelete: 'RESTRICT' })
   @JoinColumn({ name: 'user_profile_id', referencedColumnName: 'uuid' })
   userProfile!: UserProfileEntity;
 
