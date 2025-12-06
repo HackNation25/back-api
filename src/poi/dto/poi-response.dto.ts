@@ -1,4 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
+import { PoiEntity } from '../infrastructure/persistence/poi.entity';
 
 export class PoiResponseDto {
   @ApiProperty({ description: 'Unique identifier', example: '123e4567-e89b-12d3-a456-426614174000' })
@@ -36,5 +37,18 @@ export class PoiResponseDto {
 
   @ApiProperty({ description: 'Y coordinate (latitude)', example: 53.0 })
   locationY: number;
+
+  static fromEntity(poi: PoiEntity): PoiResponseDto {
+    return {
+      uuid: poi.uuid,
+      name: poi.name,
+      shortDescription: poi.shortDescription,
+      longDescription: poi.longDescription,
+      imageUrl: poi.imageUrl,
+      popularity: poi.popularity,
+      locationX: poi.locationX,
+      locationY: poi.locationY,
+    };
+  }
 }
 

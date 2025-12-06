@@ -7,6 +7,7 @@ import { addTransactionalDataSource } from 'typeorm-transactional';
 import { DataSource } from 'typeorm';
 import { config } from './config/typeorm';
 import { PoiModule } from './poi/poi.module';
+import { RecommendationModule } from './recommendation/recommendation.module';
 
 export const NODE_ENV = process.env.NODE_ENV ? `.${process.env.NODE_ENV}` : '';
 
@@ -33,6 +34,7 @@ export const NODE_ENV = process.env.NODE_ENV ? `.${process.env.NODE_ENV}` : '';
       (env) => env['NODE_ENV'] !== 'test',
     ),
     PoiModule,
+    RecommendationModule
   ],
   controllers: [AppController],
   providers: [AppService],
