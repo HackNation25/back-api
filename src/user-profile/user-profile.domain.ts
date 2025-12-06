@@ -9,6 +9,6 @@ export class Choice {
 export class UserProfileDomain {
   constructor(
     public readonly uuid: string,
-    public readonly choices: Choice[],
+    public choices: Choice[],
   ) {}
 }

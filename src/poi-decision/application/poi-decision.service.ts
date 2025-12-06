@@ -35,6 +35,13 @@ export class PoiDecisionService implements IPoiDecisionService {
       poiId,
       userProfileId,
     );
+
+    await this.userProfileService.updateCategoryWeight(
+      userProfileId,
+      poiId,
+      decision ? 'increase' : 'decrease',
+    );
+
     if (existing) {
       console.log(
         `PoiDecision already exists, updating to ${decision.decision}`,
@@ -44,11 +51,6 @@ export class PoiDecisionService implements IPoiDecisionService {
       return await this.repository.update(existing);
     }
 
-    await this.userProfileService.updateCategoryWeight(
-      userProfileId,
-      poiId,
-      'increase',
-    );
     return await this.repository.create(decision);
   }
 }

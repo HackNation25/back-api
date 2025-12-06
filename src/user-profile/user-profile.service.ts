@@ -29,10 +29,12 @@ export class UserProfileService implements IUserProfileService {
     return this.repo.createUserProfile(dto.choices);
   }
 
-
-  
   public async findById(userId: string): Promise<UserProfileDomain> {
     return this.repo.findById(userId);
+  }
+
+  public async updateProfileUser(userId: string, dto: CreateUserProfileDto) {
+    await this.repo.update(userId, dto.choices);
   }
 
   public async updateCategoryWeight(
@@ -49,22 +51,24 @@ export class UserProfileService implements IUserProfileService {
     const categoryId = poi.categoryId;
     console.log('[updateCategoryWeight] Category ID:', categoryId);
 
-    userProfile.choices?.forEach((choice) => {
+    userProfile.choices = userProfile.choices?.map((choice) => {
       if (choice.category_id === categoryId) {
         if (direction === 'increase') {
-          choice = new Choice(
+          return new Choice(
             choice.category_id,
             choice.choice,
             choice.categoryWeight + 1,
           );
         } else if (direction === 'decrease') {
-          choice = new Choice(
+          return new Choice(
             choice.category_id,
             choice.choice,
             choice.categoryWeight - 1,
           );
         }
       }
+      return choice;
     });
+    await this.updateProfileUser(userId, userProfile as CreateUserProfileDto);
   }
 }

@@ -31,4 +31,20 @@ export class TypeormUserProfileRepository implements IUserProfileRepository {
       ),
     );
   }
+
+  public async update(
+    userId: string,
+    choices?: ChoiceDto[],
+  ): Promise<UserProfileEntity> {
+    const entity = await this.repo.findOne({ where: { uuid: userId } });
+    if (!entity) {
+      throw new NotFoundException('User profile not found');
+    }
+
+    if (choices !== undefined) {
+      entity.choices = choices;
+    }
+
+    return await this.repo.save(entity);
+  }
 }
