@@ -1,4 +1,4 @@
-import { Injectable, Inject } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 import type { IPoiService } from './interfaces/poi.service.interface';
 import type { IPoiRepository } from './interfaces/poi.repository.interface';
 import { PoiEntity } from '../infrastructure/persistence/poi.entity';
@@ -18,7 +18,10 @@ export class PoiService implements IPoiService {
     return this.poiRepository.findAll();
   }
 
-  async findRandomByCategory(categoryId: string, limit: number): Promise<PoiEntity[]> {
+  async findRandomByCategory(
+    categoryId: string,
+    limit: number,
+  ): Promise<PoiEntity[]> {
     return await this.poiRepository.findRandomByCategory(categoryId, limit);
   }
 
@@ -37,4 +40,3 @@ export class PoiService implements IPoiService {
     return this.poiRepository.delete(uuid);
   }
 }
-
