@@ -15,4 +15,3 @@ import { PoiModule } from 'src/poi/poi.module';
   exports: ['IRecommendationService'],
 })
 export class RecommendationModule {}
-

@@ -10,6 +10,7 @@ import { UserProfileModule } from './user-profile/user-profile.module';
 import { CategoryModule } from './category/category.module';
 import { PoiModule } from './poi/poi.module';
 import { RecommendationModule } from './recommendation/recommendation.module';
+import { PoiDecisionModule } from './poi-decision/poi-decision.module';
 
 export const NODE_ENV = process.env.NODE_ENV ? `.${process.env.NODE_ENV}` : '';
 
@@ -39,6 +40,7 @@ export const NODE_ENV = process.env.NODE_ENV ? `.${process.env.NODE_ENV}` : '';
     ),
     PoiModule,
     RecommendationModule,
+    PoiDecisionModule,
   ],
   controllers: [AppController],
   providers: [AppService],

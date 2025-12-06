@@ -2,10 +2,16 @@ import { ApiProperty } from '@nestjs/swagger';
 import { PoiEntity } from '../infrastructure/persistence/poi.entity';
 
 export class PoiResponseDto {
-  @ApiProperty({ description: 'Unique identifier', example: '123e4567-e89b-12d3-a456-426614174000' })
+  @ApiProperty({
+    description: 'Unique identifier',
+    example: '123e4567-e89b-12d3-a456-426614174000',
+  })
   uuid: string;
 
-  @ApiProperty({ description: 'Name of the POI', example: 'Historic City Center' })
+  @ApiProperty({
+    description: 'Name of the POI',
+    example: 'Historic City Center',
+  })
   name: string;
 
   @ApiProperty({
@@ -16,7 +22,8 @@ export class PoiResponseDto {
 
   @ApiProperty({
     description: 'Long description of the POI',
-    example: 'The historic city center features well-preserved medieval architecture...',
+    example:
+      'The historic city center features well-preserved medieval architecture...',
   })
   longDescription: string;
 
@@ -51,4 +58,3 @@ export class PoiResponseDto {
     };
   }
 }
-
