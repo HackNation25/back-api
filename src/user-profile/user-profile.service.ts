@@ -18,12 +18,8 @@ export class UserProfileService implements IUserProfileService {
   async createProfileUser(
     dto: CreateUserProfileDto,
   ): Promise<UserProfileEntity> {
-    //Set the default category weight
-    //@TODO Typy do poprawy potem
     dto.choices?.map((choice) => {
-      choice.categoryWeight = parseInt(
-        process.env.INITIAL_CATEGORY_WEIGHT || '50',
-      );
+      choice.categoryWeight = choice.choice === '1' ? 80 : 20;
     });
 
     return this.repo.createUserProfile(dto.choices);
