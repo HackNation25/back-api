@@ -4,6 +4,7 @@ import { PoiDecisionEntity } from '../infrastructure/persistence/poi-decision.en
 import type { IPoiDecisionRepository } from './interfaces/poi-decision.repository.interface';
 import { UserProfileService } from '../../user-profile/user-profile.service';
 import { Transactional } from 'typeorm-transactional';
+import { PoiDecisionResponseDto } from '../dto/poi-decision-response.dto';
 
 @Injectable()
 export class PoiDecisionService implements IPoiDecisionService {
@@ -16,8 +17,44 @@ export class PoiDecisionService implements IPoiDecisionService {
 
   async getAllByUserProfile(
     userProfileId: string,
-  ): Promise<PoiDecisionEntity[]> {
-    return await this.repository.findAllByUserProfile(userProfileId);
+    latitude?: number,
+    longitude?: number,
+  ): Promise<PoiDecisionResponseDto[]> {
+    const list = await this.repository.findAllByUserProfile(userProfileId);
+
+    // If both coordinates provided, compute distance per POI and sort by it
+    if (
+      typeof latitude === 'number' &&
+      !Number.isNaN(latitude) &&
+      typeof longitude === 'number' &&
+      !Number.isNaN(longitude)
+    ) {
+      const enriched = list.map((d) => {
+        const poi: any = d.poi as any;
+        const lat = Number(poi?.locationX);
+        const lon = Number(poi?.locationY);
+        const hasCoords =
+          typeof lat === 'number' &&
+          !Number.isNaN(lat) &&
+          typeof lon === 'number' &&
+          !Number.isNaN(lon);
+        const dist = hasCoords
+          ? this.distanceInMeters(latitude, longitude, lat, lon)
+          : Number.POSITIVE_INFINITY;
+        return { d, dist } as const;
+      });
+
+      enriched.sort((a, b) => a.dist - b.dist);
+
+      return enriched.map(({ d, dist }) => {
+        const dto = PoiDecisionResponseDto.fromEntity(d);
+        dto.distanceMeters = Number.isFinite(dist) ? dist : undefined;
+        return dto;
+      });
+    }
+
+    // Otherwise, keep original order and no distance
+    return list.map((entity) => PoiDecisionResponseDto.fromEntity(entity));
   }
 
   @Transactional()
@@ -52,5 +89,25 @@ export class PoiDecisionService implements IPoiDecisionService {
     }
 
     return await this.repository.create(decision);
+  }
+
+  private distanceInMeters(
+    lat1: number,
+    lon1: number,
+    lat2: number,
+    lon2: number,
+  ): number {
+    const toRad = (deg: number) => (deg * Math.PI) / 180;
+    const R = 6371_000; // meters
+    const dLat = toRad(lat2 - lat1);
+    const dLon = toRad(lon2 - lon1);
+    const a =
+      Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+      Math.cos(toRad(lat1)) *
+        Math.cos(toRad(lat2)) *
+        Math.sin(dLon / 2) *
+        Math.sin(dLon / 2);
+    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+    return R * c;
   }
 }
