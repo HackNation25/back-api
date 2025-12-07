@@ -23,6 +23,8 @@
 
 ## Description
 
+### Film demo [YouTube](https://youtube.com/shorts/KCpQbbl4B1s)
+
 HackNation25 Back-API is a NestJS backend service that powers a city discovery and recommendation experience. It manages:
 
 - User profiles and their category preferences
