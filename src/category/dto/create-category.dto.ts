@@ -10,6 +10,14 @@ export class CreateCategoryDto {
   })
   name!: string;
 
+  @IsString({ message: 'color_hex must be a string' })
+  @MaxLength(7, { message: 'color_hex must be at most 7 characters' })
+  @ApiProperty({
+    description: 'Hex color code for the category (e.g., #RRGGBB)',
+    example: '#FF5733',
+  })
+  colorHex!: string;
+
   @IsString({ message: 'image_url must be a string' })
   @MaxLength(1024, { message: 'image_url must be at most 1024 characters' })
   @IsUrl({}, { message: 'image_url must be a valid URL' })
