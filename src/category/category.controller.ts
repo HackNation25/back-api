@@ -30,6 +30,16 @@ export class CategoryController {
     private readonly categoryService: CategoryService,
   ) {}
 
+  @Get()
+  @ApiOperation({ summary: 'Get all categories' })
+  @ApiOkResponse({
+    description: 'List of all categories',
+    type: [CategoryEntity],
+  })
+  async getAll(): Promise<CategoryEntity[]> {
+    return this.categoryService.getAll();
+  }
+
   @Get(':id')
   @ApiOperation({ summary: 'Get a category by id' })
   @ApiParam({
