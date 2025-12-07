@@ -11,6 +11,10 @@ export class CategoryService implements ICategoryService {
     private readonly repo: Repository<CategoryEntity>,
   ) {}
 
+  async getAll(): Promise<CategoryEntity[]> {
+    return this.repo.find();
+  }
+
   async getById(id: string): Promise<CategoryEntity | null> {
     return this.repo.findOne({ where: { id } });
   }
