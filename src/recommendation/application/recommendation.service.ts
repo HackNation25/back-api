@@ -25,7 +25,7 @@ export class RecommendationService implements IRecommendationService {
     //get user preferences
     const userProfile = await this.userProfileService.findById(userId);
     const selectedCategoriesWithWeights = userProfile.choices
-      .filter((choice) => choice.choice !== '0')
+      .filter((choice) => !excludedCategories.includes(choice.category_id))
       .map((choice) => ({
         categoryId: choice.category_id,
         weight: choice.categoryWeight,
@@ -58,7 +58,7 @@ export class RecommendationService implements IRecommendationService {
     const categoryPois = await this.poiService.findAllByCategory(
       selectedCategory,
       limit,
-    );
+    ).then((pois) => pois.filter((poi) => !excludedPois.includes(poi.uuid)));
 
     //random by popularity
     const randomPois = categoryPois
@@ -76,7 +76,7 @@ export class RecommendationService implements IRecommendationService {
     );
 
     if (filteredPois.length === 0) {
-      return [];
+      return this.getRecommendations(userId, limit, excludedCategories.concat(selectedCategory), excludedPois.concat(randomPois.map((poi) => poi.uuid)));
     }
 
     return filteredPois;
