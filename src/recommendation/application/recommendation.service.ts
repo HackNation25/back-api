@@ -55,17 +55,28 @@ export class RecommendationService implements IRecommendationService {
       throw new NotFoundException('No category selected');
     }
 
-    const categoryPois = await this.poiService.findAllByCategory(selectedCategory, limit);
+    const categoryPois = await this.poiService.findAllByCategory(
+      selectedCategory,
+      limit,
+    );
 
     //random by popularity
-    const randomPois = categoryPois.sort((a, b) => b.popularity - a.popularity).slice(0, limit);
+    const randomPois = categoryPois
+      .sort((a, b) => b.popularity - a.popularity)
+      .slice(0, limit);
 
-    const poiDecisions = await this.poiDecisionService.getAllByUserProfile(userId);
-    const poiDecisionsMap = new Set<string>(poiDecisions.map((decision) => decision.poiId));
-    const filteredPois = randomPois.filter((poi) => !poiDecisionsMap.has(poi.uuid) && !excludedPois.includes(poi.uuid));
+    const poiDecisions =
+      await this.poiDecisionService.getAllByUserProfile(userId);
+    const poiDecisionsMap = new Set<string>(
+      poiDecisions.map((decision) => decision.poiId),
+    );
+    const filteredPois = randomPois.filter(
+      (poi) =>
+        !poiDecisionsMap.has(poi.uuid) && !excludedPois.includes(poi.uuid),
+    );
 
     if (filteredPois.length === 0) {
-        return this.getRecommendations(userId, limit, excludedCategories.concat(selectedCategory), excludedPois.concat(randomPois.map((poi) => poi.uuid)));
+      return [];
     }
 
     return filteredPois;
