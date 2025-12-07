@@ -28,6 +28,13 @@ export class PoiDecisionResponseDto {
   })
   poi?: PoiResponseDto;
 
+  @ApiProperty({
+    description: 'Distance from provided coordinates to POI (meters)',
+    required: false,
+    type: Number,
+  })
+  distanceMeters?: number;
+
   static fromEntity(entity: PoiDecisionEntity): PoiDecisionResponseDto {
     return {
       uuid: entity.uuid,
@@ -39,6 +46,7 @@ export class PoiDecisionResponseDto {
       poi: entity.poi
         ? PoiResponseDto.fromEntity(entity.poi as any)
         : undefined,
+      distanceMeters: undefined,
     } as PoiDecisionResponseDto;
   }
 }
